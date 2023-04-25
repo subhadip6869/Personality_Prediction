@@ -5,7 +5,5 @@ image = r"Personality_Prediction\dataset\data1\training_set\Agreeableness\IMG_20
 print(f"Letter slant: {get_letter_slant(image)}")
 print(f"Line slant: {get_line_slant(image)[0]}")
 
-
-
 plt.imshow(get_line_slant(image)[1])
 plt.show()
