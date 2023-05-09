@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
+import copy
 from package.features import *
 
 # Initializing dataset directory
@@ -56,25 +57,31 @@ for i in range(test_data.shape[0]):
 
 
 # converting train features and test labels into dictionaries
-traindataset = {}
-for i in range(x_train.shape[0]):
-    traindataset['letter_slant'] = [data[0] for data in x_train]
-    traindataset['line_slant'] = [data[1] for data in x_train]
-    traindataset['letter_size'] = [data[2] for data in x_train]
-    traindataset['word_spacing'] = [data[3] for data in x_train]
-    traindataset['personality'] = [data[0] for data in y_train]
-testdataset = {}
-for i in range(x_test.shape[0]):
-    testdataset['letter_slant'] = [data[0] for data in x_test]
-    testdataset['line_slant'] = [data[1] for data in x_test]
-    testdataset['letter_size'] = [data[2] for data in x_test]
-    testdataset['word_spacing'] = [data[3] for data in x_test]
-    testdataset['personality'] = [data[0] for data in y_test]
+traindataset = {'letter_slant': [],
+                'line_slant': [],
+                'letter_size': [],
+                'word_spacing': [],
+                'personality': []}
+testdataset = copy.deepcopy(traindataset)
+
+for i in range(len(x_train)):
+    traindataset['letter_slant'].append(x_train[i][0])
+    traindataset['line_slant'].append(x_train[i][1])
+    traindataset['letter_size'].append(x_train[i][2])
+    traindataset['word_spacing'].append(x_train[i][3])
+    traindataset['personality'].append(y_train[i][0])
+
+for i in range(len(x_test)):
+    testdataset['letter_slant'].append(x_test[i][0])
+    testdataset['line_slant'].append(x_test[i][1])
+    testdataset['letter_size'].append(x_test[i][2])
+    testdataset['word_spacing'].append(x_test[i][3])
+    testdataset['personality'].append(y_test[i][0])
 
 # converting features into dataframe
 traindataset = pd.DataFrame(traindataset)
 testdataset = pd.DataFrame(testdataset)
 
 # saving dataframes as csv file
-traindataset.to_csv(f"{os.path.dirname(__file__)}/dataset/train_features1.csv", index=False)
-testdataset.to_csv(f"{os.path.dirname(__file__)}/dataset/test_data1.csv", index=False)
+traindataset.to_csv(f"{os.path.dirname(__file__)}/dataset/train_features.csv", index=False)
+testdataset.to_csv(f"{os.path.dirname(__file__)}/dataset/test_features.csv", index=False)
