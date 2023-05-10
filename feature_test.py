@@ -1,4 +1,4 @@
-from package.features import get_letter_slant, get_line_slant, auto_crop_image
+from package.features import *
 import matplotlib.pyplot as plt
 import os
 
