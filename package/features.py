@@ -5,16 +5,17 @@ import numpy as np
 
 def auto_crop_image(image_path):
     img = cv2.imread(image_path)
-    a = int(img.shape[0] * 20 / 100)
-    b = int(img.shape[0] * 30 / 100)
+    a = int(img.shape[0] * 25 / 100)
+    b = int(img.shape[0] * 35 / 100)
     c = int(img.shape[1] * 3 / 100)
     img = img[a:img.shape[0] - b, c:img.shape[1]-c]
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    gray = cv2.fastNlMeansDenoising(gray, None, 10,10,7)
-    gray = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 21, 10)
-    gray = cv2.dilate(gray, np.ones((5                    , 5), np.uint8), iterations=5)
-    x, y, w, h = cv2.boundingRect(cv2.findNonZero(gray))     # cropping image to text region only
-    img = img[y:y+h, x:x+w]
+    # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # gray = cv2.fastNlMeansDenoising(gray, None, 10,10,7)
+    # gray = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 21, 10)
+    # gray = cv2.dilate(gray, np.ones((5                    , 5), np.uint8), iterations=5)
+    # x, y, w, h = cv2.boundingRect(cv2.findNonZero(gray))     # cropping image to text region only
+    # img = img[y:y+h, x:x+w]
+    img = cv2.resize(img, (1500, 1500))
     return img
 
 def get_letter_slant(image_path):
@@ -50,7 +51,7 @@ def get_letter_slant(image_path):
     except:
         return None, img
 
-    return np.median(line_angles)
+    return round(np.median(line_angles), 1)
 
 def get_line_slant(image_path):
     # Load the image
@@ -92,7 +93,7 @@ def get_line_slant(image_path):
     for line in lines:
         x1, y1, x2, y2 = line[0]
         cv2.line(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
-    return avg_angle, img
+    return round(avg_angle, 1), img
 
 
 def get_letter_size(image_path):
@@ -110,8 +111,8 @@ def get_letter_size(image_path):
         x, y, w, h = cv2.boundingRect(cnt)
         aspect_ratio = float(w)/h
         cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
-    avg_area = np.median(np.array(total_area))
-    return avg_area, img
+    avg_area = np.mean(np.array(total_area))
+    return round(avg_area, 1), img
 
 
 def gap_between_words(image_path):
@@ -146,4 +147,4 @@ def gap_between_words(image_path):
         x, y, w, h = cv2.boundingRect(contours[i])
         cv2.rectangle(img, (x + w, y), (x + w + word_spacing[i], y + h), (0, 255, 0), 2)
 
-    return np.median(np.array(word_spacing)), img
+    return round(np.median(np.array(word_spacing)), 1), img
