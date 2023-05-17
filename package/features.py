@@ -18,6 +18,7 @@ def auto_crop_image(image_path):
     img = cv2.resize(img, (1500, 1500))
     return img
 
+
 def get_letter_slant(image_path):
     # Load the image
     img = auto_crop_image(image_path)
@@ -51,7 +52,13 @@ def get_letter_slant(image_path):
     except:
         return None, img
 
-    return round(np.median(line_angles), 1)
+    if np.median(line_angles) < -4:
+        return "reclined"
+    elif -4 <= np.median(line_angles) <= 4:
+        return "vertical"
+    elif np.median(line_angles) > 4:
+        return "inclined"
+
 
 def get_line_slant(image_path):
     # Load the image
@@ -93,7 +100,13 @@ def get_line_slant(image_path):
     for line in lines:
         x1, y1, x2, y2 = line[0]
         cv2.line(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
-    return round(avg_angle, 1), img
+
+    if avg_angle < -4:
+        return "upperside", img
+    elif -4 <= avg_angle <= 4:
+        return "baseline", img
+    elif avg_angle > 4:
+        return "lowerside", img
 
 
 def get_letter_size(image_path):
