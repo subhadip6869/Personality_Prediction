@@ -53,11 +53,11 @@ def get_letter_slant(image_path):
         return None, img
 
     if np.median(line_angles) < -4:
-        return "reclined"
+        return "forward"
     elif -4 <= np.median(line_angles) <= 4:
         return "vertical"
     elif np.median(line_angles) > 4:
-        return "inclined"
+        return "backward"
 
 
 def get_line_slant(image_path):
