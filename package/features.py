@@ -53,11 +53,11 @@ def get_letter_slant(image_path):
         return None, img
 
     if np.median(line_angles) < -4:
-        return "forward"
+        return "backward"
     elif -4 <= np.median(line_angles) <= 4:
         return "vertical"
     elif np.median(line_angles) > 4:
-        return "backward"
+        return "forward"
 
 
 def get_line_slant(image_path):
@@ -159,5 +159,51 @@ def gap_between_words(image_path):
     for i in range(len(contours)-1):
         x, y, w, h = cv2.boundingRect(contours[i])
         cv2.rectangle(img, (x + w, y), (x + w + word_spacing[i], y + h), (0, 255, 0), 2)
+    
+    if round(np.median(np.array(word_spacing)), 1) < 20:
+        return "small", img
+    elif round(np.median(np.array(word_spacing)), 1) > 30:
+        return "large", img
+    else:
+        return "medium", img
+    
 
-    return round(np.median(np.array(word_spacing)), 1), img
+def get_margin_slope(image_path):
+    # Read the image
+    image = auto_crop_image(image_path)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Apply thresholding to convert the image into binary
+    binary_image = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 21, 10)
+
+    # Apply morphological operations to enhance the text regions
+    kernel = np.ones((3, 3), np.uint8)
+    dilated_image = cv2.dilate(binary_image, kernel, iterations=2)
+
+    # Detect the contours of the text regions
+    contours, _ = cv2.findContours(dilated_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Find the leftmost and rightmost points
+    leftmost_point = None
+    rightmost_point = None
+
+    for contour in contours:
+        for point in contour:
+            if leftmost_point is None or point[0][0] < leftmost_point[0][0]:
+                leftmost_point = point
+            if rightmost_point is None or point[0][0] > rightmost_point[0][0]:
+                rightmost_point = point
+
+    # Calculate the slant angle
+    delta_y = rightmost_point[0][1] - leftmost_point[0][1]
+    delta_x = rightmost_point[0][0] - leftmost_point[0][0]
+    angle_radians = np.arctan(delta_y / delta_x)
+    slope = round(np.degrees(angle_radians), 1)
+
+    if slope > 5:
+        return "right", slope
+    elif slope < -5:
+        return "left", slope
+    else:
+        return "straight", slope
+
