@@ -1,7 +1,12 @@
 from package.features import *
+import platform
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+
+if (platform.system() == 'Linux'):
+    matplotlib.use("GTK3Cairo")
 
 image = os.path.normpath(input("Enter path: "))
 print(f"Letter slant: {get_letter_slant(image)}")
