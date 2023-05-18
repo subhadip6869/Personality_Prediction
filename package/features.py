@@ -5,8 +5,8 @@ import numpy as np
 
 def auto_crop_image(image_path):
     img = cv2.imread(image_path)
-    a = int(img.shape[0] * 25 / 100)
-    b = int(img.shape[0] * 35 / 100)
+    a = int(img.shape[0] * 2 / 100)
+    b = int(img.shape[0] * 2 / 100)
     c = int(img.shape[1] * 3 / 100)
     img = img[a:img.shape[0] - b, c:img.shape[1]-c]
     # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
