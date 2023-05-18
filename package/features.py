@@ -5,8 +5,8 @@ import numpy as np
 
 def auto_crop_image(image_path):
     img = cv2.imread(image_path)
-    a = int(img.shape[0] * 25 / 100)
-    b = int(img.shape[0] * 35 / 100)
+    a = int(img.shape[0] * 2 / 100)
+    b = int(img.shape[0] * 2 / 100)
     c = int(img.shape[1] * 3 / 100)
     img = img[a:img.shape[0] - b, c:img.shape[1]-c]
     # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -52,12 +52,13 @@ def get_letter_slant(image_path):
     except:
         return None, img
 
-    if np.median(line_angles) < -4:
-        return "backward"
-    elif -4 <= np.median(line_angles) <= 4:
-        return "vertical"
-    elif np.median(line_angles) > 4:
-        return "forward"
+    # if np.median(line_angles) < -4:
+    #     return "backward"
+    # elif -4 <= np.median(line_angles) <= 4:
+    #     return "vertical"
+    # elif np.median(line_angles) > 4:
+    #     return "forward"
+    return round(np.median(line_angles), 1)
 
 
 def get_line_slant(image_path):
@@ -101,12 +102,13 @@ def get_line_slant(image_path):
         x1, y1, x2, y2 = line[0]
         cv2.line(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
 
-    if avg_angle < -4:
-        return "upperside", img
-    elif -4 <= avg_angle <= 4:
-        return "baseline", img
-    elif avg_angle > 4:
-        return "lowerside", img
+    # if avg_angle < -4:
+    #     return "upperside", img
+    # elif -4 <= avg_angle <= 4:
+    #     return "baseline", img
+    # elif avg_angle > 4:avg_angle
+    #     return "lowerside", img
+    return round(avg_angle, 1), img
 
 
 def get_letter_size(image_path):
@@ -124,8 +126,8 @@ def get_letter_size(image_path):
         x, y, w, h = cv2.boundingRect(cnt)
         aspect_ratio = float(w)/h
         cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
-    avg_area = np.mean(np.array(total_area))
-    return round(avg_area, 1), img
+    avg_area = round(np.mean(np.array(total_area)), 1)
+    return avg_area, img
 
 
 def gap_between_words(image_path):
@@ -160,12 +162,13 @@ def gap_between_words(image_path):
         x, y, w, h = cv2.boundingRect(contours[i])
         cv2.rectangle(img, (x + w, y), (x + w + word_spacing[i], y + h), (0, 255, 0), 2)
     
-    if round(np.median(np.array(word_spacing)), 1) < 20:
-        return "small", img
-    elif round(np.median(np.array(word_spacing)), 1) > 30:
-        return "large", img
-    else:
-        return "medium", img
+    # if round(np.median(np.array(word_spacing)), 1) < 20:
+    #     return "small", img
+    # elif round(np.median(np.array(word_spacing)), 1) > 30:
+    #     return "large", img
+    # else:
+    #     return "medium", img
+    return round(np.median(np.array(word_spacing)), 1), img
     
 
 def get_margin_slope(image_path):
@@ -200,10 +203,11 @@ def get_margin_slope(image_path):
     angle_radians = np.arctan(delta_y / delta_x)
     slope = round(np.degrees(angle_radians), 1)
 
-    if slope > 5:
-        return "right", slope
-    elif slope < -5:
-        return "left", slope
-    else:
-        return "straight", slope
+    # if slope > 5:
+    #     return "right", slope
+    # elif slope < -5:
+    #     return "left", slope
+    # else:
+    #     return "straight", slope
+    return slope
 

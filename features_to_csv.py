@@ -54,6 +54,7 @@ for i in range(test_data.shape[0]):
     iminfo.append(gap_between_words(image_path=test_data.image.tolist()[i])[0])
     x_test.append(iminfo)
     y_test.append([test_data["class"].tolist()[i]])
+print()
 
 
 # converting train features and test labels into dictionaries
