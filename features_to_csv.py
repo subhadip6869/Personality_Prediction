@@ -35,7 +35,8 @@ x_train = []
 y_train = []
 for i in range(train_data.shape[0]):
     iminfo = []
-    print("\rTrain data processed: {:3d}/{:3d}".format(i+1, train_data.shape[0]), end="")
+    datalen = str(len(str(train_data.shape[0])))
+    print(("\rTrain data processed: {:" + datalen + "d}/{:" + datalen + "d}").format(i+1, train_data.shape[0]), end="")
     iminfo.append(get_letter_slant(image_path=train_data.image.tolist()[i]))
     iminfo.append(get_line_slant(image_path=train_data.image.tolist()[i])[0])
     iminfo.append(get_margin_slope(image_path=train_data.image.tolist()[i]))
@@ -48,7 +49,8 @@ x_test = []
 y_test = []
 for i in range(test_data.shape[0]):
     iminfo = []
-    print("\rTest data processed: {:3d}/{:3d}".format(i+1, test_data.shape[0]), end="")
+    datalen = str(len(str(test_data.shape[0])))
+    print(("\rTest data processed: {:" + datalen + "d}/{:" + datalen + "d}").format(i+1, test_data.shape[0]), end="")
     iminfo.append(get_letter_slant(image_path=test_data.image.tolist()[i]))
     iminfo.append(get_line_slant(image_path=test_data.image.tolist()[i])[0])
     iminfo.append(get_margin_slope(image_path=test_data.image.tolist()[i]))
@@ -66,7 +68,7 @@ traindataset = {'letter_slant': [],
                 'letter_size': [],
                 'word_spacing': [],
                 'personality': []}
-testdataset = copy.deepcopy(traindataset)
+# testdataset = copy.deepcopy(traindataset)
 
 for i in range(len(x_train)):
     traindataset['letter_slant'].append(x_train[i][0])
@@ -77,17 +79,17 @@ for i in range(len(x_train)):
     traindataset['personality'].append(y_train[i][0])
 
 for i in range(len(x_test)):
-    testdataset['letter_slant'].append(x_test[i][0])
-    testdataset['line_slant'].append(x_test[i][1])
-    testdataset['margin_slope'].append(x_test[i][2])
-    testdataset['letter_size'].append(x_test[i][3])
-    testdataset['word_spacing'].append(x_test[i][4])
-    testdataset['personality'].append(y_test[i][0])
+    traindataset['letter_slant'].append(x_test[i][0])
+    traindataset['line_slant'].append(x_test[i][1])
+    traindataset['margin_slope'].append(x_test[i][2])
+    traindataset['letter_size'].append(x_test[i][3])
+    traindataset['word_spacing'].append(x_test[i][4])
+    traindataset['personality'].append(y_test[i][0])
 
 # converting features into dataframe
 traindataset = pd.DataFrame(traindataset)
-testdataset = pd.DataFrame(testdataset)
+# testdataset = pd.DataFrame(testdataset)
 
 # saving dataframes as csv file
-traindataset.to_csv(f"{os.path.dirname(__file__)}/dataset/train_features.csv", index=False)
-testdataset.to_csv(f"{os.path.dirname(__file__)}/dataset/test_features.csv", index=False)
+traindataset.to_csv(f"{os.path.dirname(__file__)}/dataset/features.csv", index=False)
+# testdataset.to_csv(f"{os.path.dirname(__file__)}/dataset/test_features.csv", index=False)
