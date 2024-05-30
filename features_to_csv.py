@@ -36,7 +36,7 @@ y_train = []
 for i in range(train_data.shape[0]):
     iminfo = []
     print("\rTrain data processed: {:3d}/{:3d}".format(i+1, train_data.shape[0]), end="")
-    iminfo.append(get_letter_slant(image_path=train_data.image.tolist()[i]))
+    iminfo.append(get_letter_slant(image_path=train_data.image.tolist()[i])[0])
     iminfo.append(get_line_slant(image_path=train_data.image.tolist()[i])[0])
     iminfo.append(get_letter_size(image_path=train_data.image.tolist()[i])[0])
     iminfo.append(gap_between_words(image_path=train_data.image.tolist()[i])[0])
@@ -48,7 +48,7 @@ y_test = []
 for i in range(test_data.shape[0]):
     iminfo = []
     print("\rTest data processed: {:3d}/{:3d}".format(i+1, test_data.shape[0]), end="")
-    iminfo.append(get_letter_slant(image_path=test_data.image.tolist()[i]))
+    iminfo.append(get_letter_slant(image_path=test_data.image.tolist()[i])[0])
     iminfo.append(get_line_slant(image_path=test_data.image.tolist()[i])[0])
     iminfo.append(get_letter_size(image_path=test_data.image.tolist()[i])[0])
     iminfo.append(gap_between_words(image_path=test_data.image.tolist()[i])[0])
@@ -83,5 +83,5 @@ traindataset = pd.DataFrame(traindataset)
 testdataset = pd.DataFrame(testdataset)
 
 # saving dataframes as csv file
-traindataset.to_csv(f"{os.path.dirname(__file__)}/dataset/train_features.csv", index=False)
-testdataset.to_csv(f"{os.path.dirname(__file__)}/dataset/test_features.csv", index=False)
+traindataset.to_csv(f"{os.path.dirname(__file__)}/dataset/my_train_features.csv", index=False)
+testdataset.to_csv(f"{os.path.dirname(__file__)}/dataset/my_test_features.csv", index=False)

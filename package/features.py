@@ -5,17 +5,20 @@ import numpy as np
 
 def auto_crop_image(image_path):
     img = cv2.imread(image_path)
-    a = int(img.shape[0] * 25 / 100)
-    b = int(img.shape[0] * 35 / 100)
-    c = int(img.shape[1] * 3 / 100)
-    img = img[a:img.shape[0] - b, c:img.shape[1]-c]
-    # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # gray = cv2.fastNlMeansDenoising(gray, None, 10,10,7)
-    # gray = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 21, 10)
-    # gray = cv2.dilate(gray, np.ones((5                    , 5), np.uint8), iterations=5)
-    # x, y, w, h = cv2.boundingRect(cv2.findNonZero(gray))     # cropping image to text region only
-    # img = img[y:y+h, x:x+w]
-    img = cv2.resize(img, (1500, 1500))
+    try:
+        a = int(img.shape[0] * 25 / 100)
+        b = int(img.shape[0] * 35 / 100)
+        c = int(img.shape[1] * 3 / 100)
+        img = img[a:img.shape[0] - b, c:img.shape[1]-c]
+        # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        # gray = cv2.fastNlMeansDenoising(gray, None, 10,10,7)
+        # gray = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 21, 10)
+        # gray = cv2.dilate(gray, np.ones((5                    , 5), np.uint8), iterations=5)
+        # x, y, w, h = cv2.boundingRect(cv2.findNonZero(gray))     # cropping image to text region only
+        # img = img[y:y+h, x:x+w]
+        img = cv2.resize(img, (1500, 1500))
+    except Exception as e:
+        print("\nError: " + str(e) + ": " + image_path)
     return img
 
 

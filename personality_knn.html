@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>personality_randomforest</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>personality_knn</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7517,7 +7517,7 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
@@ -8064,8 +8064,8 @@ None
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="s2">"gini"</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">rf_res</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">knn</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">"brute"</span><span class="p">)</span>
+<span class="n">knn_res</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8079,7 +8079,7 @@ None
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -8094,43 +8094,56 @@ None
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>['Agreeableness' 'Agreeableness' 'Agreeableness' 'Agreeableness'
+ 'Neuroticism' 'Agreeableness' 'Agreeableness' 'Agreeableness'
+ 'Agreeableness' 'Agreeableness' 'Neuroticism' 'Agreeableness'
  'Agreeableness' 'Agreeableness' 'Agreeableness' 'Agreeableness'
+ 'Agreeableness' 'Neuroticism' 'Agreeableness' 'Agreeableness'
  'Agreeableness' 'Agreeableness' 'Agreeableness' 'Agreeableness'
- 'Agreeableness' 'Agreeableness' 'Agreeableness' 'Agreeableness'
- 'Agreeableness' 'Agreeableness' 'Agreeableness' 'Agreeableness'
- 'Agreeableness' 'Agreeableness' 'Agreeableness' 'Agreeableness'
- 'Agreeableness' 'Agreeableness' 'Agreeableness' 'Agreeableness'
- 'Agreeableness' 'Agreeableness' 'Conscientiousness' 'Conscientiousness'
+ 'Openness' 'Agreeableness' 'Openness' 'Agreeableness' 'Openness'
+ 'Agreeableness' 'Openness' 'Conscientiousness' 'Openness' 'Neuroticism'
+ 'Conscientiousness' 'Agreeableness' 'Conscientiousness'
  'Conscientiousness' 'Conscientiousness' 'Conscientiousness'
+ 'Conscientiousness' 'Openness' 'Conscientiousness' 'Conscientiousness'
+ 'Agreeableness' 'Conscientiousness' 'Agreeableness' 'Conscientiousness'
+ 'Conscientiousness' 'Agreeableness' 'Conscientiousness'
  'Conscientiousness' 'Conscientiousness' 'Conscientiousness'
- 'Conscientiousness' 'Conscientiousness' 'Conscientiousness'
- 'Conscientiousness' 'Conscientiousness' 'Conscientiousness'
- 'Conscientiousness' 'Conscientiousness' 'Conscientiousness'
- 'Conscientiousness' 'Conscientiousness' 'Conscientiousness'
- 'Conscientiousness' 'Conscientiousness' 'Conscientiousness'
- 'Conscientiousness' 'Conscientiousness' 'Conscientiousness'
- 'Conscientiousness' 'Extraversion' 'Extraversion' 'Extraversion'
- 'Extraversion' 'Extraversion' 'Extraversion' 'Extraversion'
- 'Extraversion' 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Neuroticism'
- 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Neuroticism'
- 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Neuroticism'
- 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Neuroticism'
- 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Neuroticism'
- 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Neuroticism'
- 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Neuroticism'
- 'Neuroticism' 'Neuroticism' 'Openness' 'Openness' 'Openness' 'Openness'
- 'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Openness'
- 'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Openness'
- 'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Openness'
- 'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Openness'
- 'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Openness'
- 'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Openness'
- 'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Openness'
- 'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Openness'
- 'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Openness'
- 'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Openness'
- 'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Openness'
+ 'Conscientiousness' 'Conscientiousness' 'Openness' 'Neuroticism'
+ 'Openness' 'Agreeableness' 'Conscientiousness' 'Openness' 'Agreeableness'
+ 'Extraversion' 'Conscientiousness' 'Conscientiousness' 'Openness'
+ 'Neuroticism' 'Agreeableness' 'Neuroticism' 'Openness' 'Openness'
+ 'Agreeableness' 'Neuroticism' 'Neuroticism' 'Openness' 'Neuroticism'
+ 'Neuroticism' 'Neuroticism' 'Neuroticism' 'Agreeableness' 'Agreeableness'
+ 'Neuroticism' 'Neuroticism' 'Conscientiousness' 'Conscientiousness'
+ 'Conscientiousness' 'Agreeableness' 'Neuroticism' 'Neuroticism'
+ 'Agreeableness' 'Agreeableness' 'Neuroticism' 'Agreeableness'
+ 'Neuroticism' 'Extraversion' 'Agreeableness' 'Openness' 'Neuroticism'
+ 'Agreeableness' 'Conscientiousness' 'Openness' 'Neuroticism'
+ 'Agreeableness' 'Openness' 'Conscientiousness' 'Agreeableness' 'Openness'
+ 'Conscientiousness' 'Openness' 'Conscientiousness' 'Openness' 'Openness'
+ 'Openness' 'Openness' 'Agreeableness' 'Agreeableness' 'Agreeableness'
+ 'Openness' 'Agreeableness' 'Openness' 'Openness' 'Openness' 'Openness'
+ 'Openness' 'Agreeableness' 'Conscientiousness' 'Openness' 'Openness'
+ 'Openness' 'Conscientiousness' 'Openness' 'Agreeableness' 'Agreeableness'
+ 'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Neuroticism'
+ 'Openness' 'Agreeableness' 'Openness' 'Openness' 'Agreeableness'
+ 'Conscientiousness' 'Openness' 'Openness' 'Agreeableness' 'Openness'
+ 'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Agreeableness'
+ 'Agreeableness' 'Openness' 'Openness' 'Conscientiousness' 'Agreeableness'
+ 'Openness' 'Openness' 'Neuroticism' 'Conscientiousness' 'Openness'
+ 'Openness' 'Extraversion' 'Conscientiousness' 'Openness' 'Openness'
  'Openness' 'Openness' 'Openness' 'Openness' 'Openness' 'Openness']
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>d:\Subhadip\MCA_Projects\Personality_Prediction\venv\Lib\site-packages\joblib\externals\loky\backend\context.py:136: UserWarning: Could not find the number of physical cores for the following reason:
+found 0 physical cores &lt; 1
+Returning the number of logical cores instead. You can silence this warning by setting LOKY_MAX_CPU_COUNT to the number of cores you want to use.
+  warnings.warn(
+  File "d:\Subhadip\MCA_Projects\Personality_Prediction\venv\Lib\site-packages\joblib\externals\loky\backend\context.py", line 282, in _count_physical_cores
+    raise ValueError(f"found {cpu_count_physical} physical cores &lt; 1")
 </pre>
 </div>
 </div>
@@ -8159,33 +8172,7 @@ None
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>1.0</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">rf</span><span class="o">.</span><span class="n">feature_importances_</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>array([0.09260907, 0.0737168 , 0.75604601, 0.07762811])</pre>
+<pre>0.5988700564971752</pre>
 </div>
 </div>
 </div>
@@ -8309,7 +8296,7 @@ None
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e2cad04610&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x2a127226c10&gt;</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
@@ -8346,7 +8333,7 @@ None
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e2cae94550&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x2a12790ce10&gt;</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
@@ -8435,7 +8422,7 @@ None
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">my_pred</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">my_df</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">my_pred</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">my_df</span><span class="p">)</span>
 <span class="n">my_pred</span>
 </pre></div>
 </div>
