@@ -53,11 +53,11 @@ def get_letter_slant(image_path):
         return None, img
 
     if np.median(line_angles) < -4:
-        return "backward"
+        return "backward", np.median(line_angles)
     elif -4 <= np.median(line_angles) <= 4:
-        return "vertical"
+        return "vertical", np.median(line_angles)
     elif np.median(line_angles) > 4:
-        return "forward"
+        return "forward", np.median(line_angles)
 
 
 def get_line_slant(image_path):
@@ -102,11 +102,11 @@ def get_line_slant(image_path):
         cv2.line(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
 
     if avg_angle < -4:
-        return "upperside", img
+        return "upperside", img, avg_angle
     elif -4 <= avg_angle <= 4:
-        return "baseline", img
+        return "baseline", img, avg_angle
     elif avg_angle > 4:
-        return "lowerside", img
+        return "lowerside", img, avg_angle
 
 
 def get_letter_size(image_path):
@@ -161,11 +161,11 @@ def gap_between_words(image_path):
         cv2.rectangle(img, (x + w, y), (x + w + word_spacing[i], y + h), (0, 255, 0), 2)
     
     if round(np.median(np.array(word_spacing)), 1) < 20:
-        return "small", img
+        return "small", img, np.median(np.array(word_spacing))
     elif round(np.median(np.array(word_spacing)), 1) > 30:
-        return "large", img
+        return "large", img, np.median(np.array(word_spacing))
     else:
-        return "medium", img
+        return "medium", img, np.median(np.array(word_spacing))
     
 
 def get_margin_slope(image_path):
